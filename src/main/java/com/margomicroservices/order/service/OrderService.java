@@ -1,5 +1,6 @@
 package com.margomicroservices.order.service;
 
+import com.margomicroservices.order.amqp.QueueProducer;
 import com.margomicroservices.order.model.Order;
 import com.margomicroservices.order.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.Optional;
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+    private QueueProducer queueProducer;
 
     public List<Order> getAll() {
         return orderRepository.findAll();
@@ -25,7 +27,9 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 
-    public void create(Order order) {
-        orderRepository.save(order);
+    public Order create(Order order) {
+        queueProducer.produce("HEY YOU!");
+
+        return orderRepository.save(order);
     }
 }

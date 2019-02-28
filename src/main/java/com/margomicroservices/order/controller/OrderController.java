@@ -41,10 +41,8 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<?> create(@Valid @RequestBody final Order order) throws URISyntaxException {
-        orderService.create(order);
-
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> create(@Valid @RequestBody final Order order) throws Exception {
+        return ResponseEntity.ok(orderService.create(order));
     }
 
     @DeleteMapping("orders/{id}")
