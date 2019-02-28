@@ -13,7 +13,7 @@ public class V1__create_orders_table extends BaseJavaMigration {
         try (statement) {
             statement.execute("create table orders" +
                     "(id bigserial not null constraint orders_pkey primary key," +
-                    "created_time timestamp default current_timestamp)");
+                    "comment text)");
         }
     }
 }

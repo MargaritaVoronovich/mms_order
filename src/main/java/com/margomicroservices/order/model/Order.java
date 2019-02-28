@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "orders")
@@ -17,6 +16,6 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "timestamp")
-    private Timestamp timestamp;
+    @Column(columnDefinition = "text")
+    private String comment;
 }
