@@ -12,8 +12,10 @@ import org.springframework.stereotype.Component;
 public class QueueProducer {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Value("${fanout.exchange}")
-    private String fanoutExchange;
+    @Value("${topic.exchange}")
+    private String topicExchange;
+    @Value("${routing.key}")
+    private String routingKey;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -26,8 +28,7 @@ public class QueueProducer {
     public void produce(String message) {
         logger.info("Storing notification...");
 
-        rabbitTemplate.setExchange(fanoutExchange);
-        rabbitTemplate.convertAndSend(message);
+        rabbitTemplate.convertAndSend(topicExchange, routingKey, message);
 
         logger.info("Notification stored in queue successfully");
     }

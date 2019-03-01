@@ -1,6 +1,9 @@
 package com.margomicroservices.order.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.margomicroservices.order.amqp.QueueProducer;
+import com.margomicroservices.order.amqp.event.OrderCreatedEvent;
 import com.margomicroservices.order.model.Order;
 import com.margomicroservices.order.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,10 @@ import java.util.Optional;
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
     private QueueProducer queueProducer;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public List<Order> getAll() {
         return orderRepository.findAll();
@@ -27,9 +33,11 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 
-    public Order create(Order order) {
-        queueProducer.produce("HEY YOU!");
+    public Order create(Order order) throws JsonProcessingException {
+        Order savedOrder = orderRepository.save(order);
 
-        return orderRepository.save(order);
+        queueProducer.produce(new OrderCreatedEvent(savedOrder, objectMapper).toJsonString());
+
+        return savedOrder;
     }
 }
