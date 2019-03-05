@@ -12,8 +12,6 @@ public class RabbitConfig {
 
     @Value("${topic.exchange}")
     private String topicExchange;
-    @Value("${queue.name}")
-    private String queueName;
     @Value("${routing.key}")
     private String routingKey;
 

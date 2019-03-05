@@ -14,12 +14,16 @@ import java.util.Optional;
 
 @Service
 public class OrderService {
+    private final OrderRepository orderRepository;
+    private final QueueProducer queueProducer;
+    private final ObjectMapper objectMapper;
+
     @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private QueueProducer queueProducer;
-    @Autowired
-    private ObjectMapper objectMapper;
+    public OrderService(OrderRepository orderRepository, QueueProducer queueProducer, ObjectMapper objectMapper) {
+        this.orderRepository = orderRepository;
+        this.queueProducer = queueProducer;
+        this.objectMapper = objectMapper;
+    }
 
     public List<Order> getAll() {
         return orderRepository.findAll();
@@ -36,7 +40,7 @@ public class OrderService {
     public Order create(Order order) throws JsonProcessingException {
         Order savedOrder = orderRepository.save(order);
 
-        queueProducer.produce(new OrderCreatedEvent(savedOrder, objectMapper).toJsonString());
+        queueProducer.produce(new OrderCreatedEvent(savedOrder.getId(), objectMapper).toJsonString());
 
         return savedOrder;
     }

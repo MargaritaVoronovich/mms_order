@@ -21,4 +21,8 @@ public class Order implements Serializable {
     @Column(columnDefinition = "text")
     @JsonProperty
     private String comment;
+
+    public Long getId() {
+        return id;
+    }
 }

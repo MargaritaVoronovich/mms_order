@@ -18,9 +18,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @Autowired
-    OrderController(
-            final OrderService orderService
-    ) {
+    OrderController(final OrderService orderService) {
         this.orderService = orderService;
     }
 

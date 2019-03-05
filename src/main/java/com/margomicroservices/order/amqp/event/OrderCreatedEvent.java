@@ -3,8 +3,6 @@ package com.margomicroservices.order.amqp.event;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.margomicroservices.order.model.Order;
 
 
 public class OrderCreatedEvent {
@@ -13,10 +11,14 @@ public class OrderCreatedEvent {
     @JsonProperty
     private final Long time;
 
-    private final Order order;
+    @JsonProperty
+    private final String status = "created";
 
-    public OrderCreatedEvent(Order order, ObjectMapper objectMapper) {
-        this.order = order;
+    @JsonProperty
+    private final Long orderId;
+
+    public OrderCreatedEvent(Long orderId, ObjectMapper objectMapper) {
+        this.orderId = orderId;
         this.objectMapper = objectMapper;
 
         time = System.currentTimeMillis();
@@ -30,8 +32,11 @@ public class OrderCreatedEvent {
         return time;
     }
 
-    @JsonSerialize(as = Order.class)
-    public Order getOrder() {
-        return order;
+    public String getStatus() {
+        return status;
+    }
+
+    public Long getOrderId() {
+        return orderId;
     }
 }
