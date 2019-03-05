@@ -1,7 +1,6 @@
 package com.margomicroservices.order.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.margomicroservices.order.amqp.QueueProducer;
 import com.margomicroservices.order.amqp.event.OrderCreatedEvent;
 import com.margomicroservices.order.model.Order;
@@ -16,13 +15,13 @@ import java.util.Optional;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final QueueProducer queueProducer;
-    private final ObjectMapper objectMapper;
+    private final JsonService jsonService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, QueueProducer queueProducer, ObjectMapper objectMapper) {
+    public OrderService(OrderRepository orderRepository, QueueProducer queueProducer, JsonService jsonService) {
         this.orderRepository = orderRepository;
         this.queueProducer = queueProducer;
-        this.objectMapper = objectMapper;
+        this.jsonService = jsonService;
     }
 
     public List<Order> getAll() {
@@ -40,7 +39,7 @@ public class OrderService {
     public Order create(Order order) throws JsonProcessingException {
         Order savedOrder = orderRepository.save(order);
 
-        queueProducer.produce(new OrderCreatedEvent(savedOrder.getId(), objectMapper).toJsonString());
+        queueProducer.produce(jsonService.toJsonString(new OrderCreatedEvent(savedOrder.getId())));
 
         return savedOrder;
     }

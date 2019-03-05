@@ -1,6 +1,5 @@
 package com.margomicroservices.order.amqp;
 
-import com.margomicroservices.order.config.RabbitConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -13,10 +12,8 @@ import org.springframework.stereotype.Component;
 public class QueueProducer {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Value("${topic.exchange}")
-    private String topicExchange;
-    @Value("${routing.key}")
-    private String routingKey;
+    @Value("${fanout.exchange}")
+    private String fanoutExchange;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -29,8 +26,7 @@ public class QueueProducer {
     public void produce(String message) {
         logger.info("Storing notification...");
 
-        rabbitTemplate.convertAndSend(RabbitConfig.DELIVERY_QUEUE, message);
-        rabbitTemplate.convertAndSend(RabbitConfig.HISTORY_QUEUE, message);
+        rabbitTemplate.convertAndSend(fanoutExchange, "", message);
 
         logger.info("Notification stored in queue successfully");
     }

@@ -7,36 +7,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
-    public static final String HISTORY_QUEUE = "history_queue";
-    public static final String DELIVERY_QUEUE = "delivery_queue";
-
-    @Value("${topic.exchange}")
-    private String topicExchange;
-    @Value("${routing.key}")
-    private String routingKey;
+    @Value("${fanout.exchange}")
+    private String fanoutExchange;
 
     @Bean
-    Queue historyQueue() {
-        return new Queue(HISTORY_QUEUE, true);
-    }
-
-    @Bean
-    Queue deliveryQueue() {
-        return new Queue(DELIVERY_QUEUE, true);
-    }
-
-    @Bean
-    TopicExchange exchange() {
-        return new TopicExchange(topicExchange);
-    }
-
-    @Bean
-    Binding historyBinding(TopicExchange exchange) {
-        return BindingBuilder.bind(historyQueue()).to(exchange).with(routingKey);
-    }
-
-    @Bean
-    Binding deliveryBinding(TopicExchange exchange) {
-        return BindingBuilder.bind(deliveryQueue()).to(exchange).with(routingKey);
+    FanoutExchange exchange() {
+        return new FanoutExchange(fanoutExchange);
     }
 }
