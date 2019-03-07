@@ -38,6 +38,9 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+    volumes:
+      - ./conf/myrabbit.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./conf/rabbitmq-definitions.json:/etc/rabbitmq/rabbitmq-definitions.json
 
 volumes:
   order-postgres-data:

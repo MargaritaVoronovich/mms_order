@@ -1,0 +1,109 @@
+{
+  "rabbit_version": "3.7.12",
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "n/9GwKBvy0Zh0D1weX/lv5tYJiEolt5FxN6ObHliFOwLj9+a",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    },
+    {
+      "name": "admin",
+      "password_hash": "6Vo61YrTW7W9F/70NzxVH3CiV1yctkhaqz60CwAILipukiTY",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "rabbit@dce7137f2e69"
+    }
+  ],
+  "policies": [],
+  "queues": [
+    {
+      "name": "history_queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "delivery_queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "orders.topic",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "orders.fanout",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "orders.fanout",
+      "vhost": "/",
+      "destination": "delivery_queue",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "orders.fanout",
+      "vhost": "/",
+      "destination": "history_queue",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "orders.topic",
+      "vhost": "/",
+      "destination": "history_queue",
+      "destination_type": "queue",
+      "routing_key": "order.*",
+      "arguments": {}
+    }
+  ]
+}
