@@ -1,4 +1,4 @@
-package com.margomicroservices.order._enum.order;
+package com.margomicroservices.order.amqp.event;
 
 public enum OrderStatus {
     CREATED, DELIVERED;

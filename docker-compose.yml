@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  order-service-postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=margaritavoronovich
+      - POSTGRES_PASSWORD=margaritavoronovich
+      - POSTGRES_DB=mms_order
+
+  delivery-service-postgres:
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=margaritavoronovich
+      - POSTGRES_PASSWORD=margaritavoronovich
+      - POSTGRES_DB=mms_delivery
+
+  history-service-postgres:
+    image: postgres:latest
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=margaritavoronovich
+      - POSTGRES_PASSWORD=margaritavoronovich
+      - POSTGRES_DB=mms_history
+
+  rabbitmq-management:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"

@@ -1,7 +1,6 @@
 package com.margomicroservices.order.amqp.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.margomicroservices.order._enum.order.OrderStatus;
 import lombok.Data;
 
 @Data
